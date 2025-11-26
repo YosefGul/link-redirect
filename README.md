@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DynamicLinker
+
+A Bitly-style dynamic link redirection platform built with Next.js, PostgreSQL, and Redis.
+
+## Features
+
+- **Dynamic Links**: Create short links that can be updated anytime without changing the URL
+- **Analytics**: Track clicks, referers, countries, and browsers
+- **Fast Redirects**: Redis caching for lightning-fast performance
+- **User Management**: Secure authentication with JWT
+- **Dashboard**: Beautiful, modern UI for managing your links
+
+## Tech Stack
+
+- **Frontend**: Next.js 16 (App Router), React, TailwindCSS
+- **Backend**: Next.js API Routes
+- **Database**: PostgreSQL with Prisma ORM
+- **Cache**: Redis
+- **Authentication**: JWT
+- **Deployment**: Docker, Docker Compose, Nginx
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 20+
+- PostgreSQL 16+
+- Redis 7+
+- Docker & Docker Compose (optional)
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd link-project
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Set up the database:
+```bash
+npx prisma migrate dev
+npx prisma generate
+```
 
-## Learn More
+5. Run the development server:
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+See `.env.example` for required environment variables:
 
-## Deploy on Vercel
+- `DATABASE_URL`: PostgreSQL connection string
+- `REDIS_URL`: Redis connection string
+- `JWT_SECRET`: Secret key for JWT tokens (min 32 characters)
+- `JWT_EXPIRES_IN`: JWT expiration time (default: 24h)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Docker Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Build and start services:
+```bash
+docker-compose up -d
+```
+
+2. Run migrations:
+```bash
+docker-compose exec app npx prisma migrate deploy
+```
+
+3. Access the application:
+- Application: http://localhost:3000
+- Nginx: http://localhost (port 80)
+
+## Project Structure
+
+```
+link-project/
+├── app/                    # Next.js App Router
+│   ├── (auth)/             # Authentication pages
+│   ├── (dashboard)/        # Dashboard pages
+│   ├── api/                # API routes
+│   └── [slug]/             # Dynamic redirect handler
+├── components/             # React components
+├── lib/                    # Utilities and services
+├── prisma/                 # Database schema
+├── store/                   # State management
+├── types/                   # TypeScript types
+└── docs/                    # Documentation
+```
+
+## Documentation
+
+- [API Documentation](./docs/API.md) - Complete API reference
+- [Deployment Guide](./docs/DEPLOYMENT.md) - Step-by-step deployment instructions
+- [Web Design Document (WDD)](./docs/WDD.md) - Complete project specification and architecture
+
+## License
+
+MIT
