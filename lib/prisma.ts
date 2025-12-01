@@ -1,15 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { validateServerEnv } from './env.server';
-
-// Validate environment variables on import
-if (typeof window === 'undefined') {
-  try {
-    validateServerEnv();
-  } catch (error) {
-    console.error('Environment validation failed:', error);
-    throw error;
-  }
-}
 
 // Type assertion is necessary here because globalThis doesn't have a PrismaClient type
 // This pattern is safe and commonly used in Next.js to prevent multiple Prisma instances

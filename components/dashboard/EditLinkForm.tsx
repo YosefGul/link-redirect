@@ -15,7 +15,7 @@ import { CopyButton } from '@/components/dashboard/CopyButton';
 import { updateLinkSchema, type UpdateLinkFormData } from '@/lib/validations/link';
 import { checkLinkExpiration } from '@/lib/link/expiration-check';
 import { isPasswordProtected } from '@/lib/link/password';
-import { checkMaxClicks } from '@/lib/link/service';
+import { checkMaxClicks } from '@/lib/link/max-clicks';
 import { UpdateLinkRequest } from '@/types/link';
 import { extractAxiosError } from '@/lib/utils/error-utils';
 

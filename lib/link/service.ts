@@ -16,6 +16,7 @@ import {
 } from './stats-utils';
 import { hashLinkPassword } from './password';
 import { validateExpirationDate, checkLinkExpiration } from './expiration-check';
+import { checkMaxClicks } from './max-clicks';
 
 /**
  * Create a new short link
@@ -408,27 +409,10 @@ export function checkLinkExpirationStatus(link: { expiresAt: Date | null }): Ret
 }
 
 /**
- * Check if link has reached max clicks
+ * Re-export checkMaxClicks for backward compatibility
+ * @deprecated Import directly from '@/lib/link/max-clicks' instead
  */
-export function checkMaxClicks(link: { hits: bigint | number; maxClicks?: number | null }): {
-  reached: boolean;
-  remaining: number | null;
-} {
-  if (!link.maxClicks) {
-    return {
-      reached: false,
-      remaining: null,
-    };
-  }
-
-  const currentHits = Number(link.hits);
-  const remaining = Math.max(0, link.maxClicks - currentHits);
-
-  return {
-    reached: currentHits >= link.maxClicks,
-    remaining,
-  };
-}
+export { checkMaxClicks };
 
 /**
  * Get expired links (for cleanup jobs)

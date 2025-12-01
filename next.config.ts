@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  // Exclude ioredis from being bundled in server components
+  // This ensures it's only used server-side
+  serverExternalPackages: ['ioredis'],
   /* config options here */
   async headers() {
     return [
@@ -36,6 +39,8 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // Add empty turbopack config to silence warning
+  turbopack: {},
 };
 
 export default nextConfig;

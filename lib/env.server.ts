@@ -17,6 +17,21 @@ export function validateServerEnv(): ServerEnv {
     return validatedEnv;
   }
 
+  // Skip validation during build phase
+  // Environment variables will be validated at runtime
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    // Return a minimal valid config for build time
+    // Actual validation will happen at runtime
+    validatedEnv = {
+      DATABASE_URL: process.env.DATABASE_URL || 'postgresql://localhost:5432/db',
+      REDIS_URL: process.env.REDIS_URL || 'redis://localhost:6379',
+      JWT_SECRET: process.env.JWT_SECRET || 'build-time-secret-min-32-chars-long',
+      JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '24h',
+      NODE_ENV: (process.env.NODE_ENV as 'development' | 'production' | 'test') || 'development',
+    };
+    return validatedEnv;
+  }
+
   try {
     validatedEnv = serverEnvSchema.parse({
       DATABASE_URL: process.env.DATABASE_URL,
